@@ -1,8 +1,5 @@
 package com.stratum.uiserverapi;
 
-import java.io.*;
-import java.net.Socket;
-
 public class UIServerApiApp {
 
     public static void main(String[] args) {
@@ -19,17 +16,9 @@ public class UIServerApiApp {
 
         requestGenerator.endRequest();
 
-        String hostname = "localhost";
-        int portNo = 50666;
-
-        try {
-            Socket serverSocket = new Socket(hostname, portNo);
-            DataOutputStream out = new DataOutputStream(serverSocket.getOutputStream());
-            DataInputStream in = new DataInputStream((serverSocket.getInputStream()));
-            out.write(requestGenerator.getRequest());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        requestGenerator.openConnection("localhost", 50666);
+        requestGenerator.sendRequest();
+        requestGenerator.closeConnection();
 
 
     }
