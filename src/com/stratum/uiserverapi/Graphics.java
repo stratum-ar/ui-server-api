@@ -5,8 +5,8 @@ public class Graphics {
     public Graphics() {
     }
 
-    public byte[] drawLine(int sx, int sy, int ex, int ey, int r, int g, int b) {
-        return new byte[]{
+    public void drawLine(RequestGenerator req, int sx, int sy, int ex, int ey, int r, int g, int b) {
+        byte[] arr = {
                 (byte) 16,
                 (byte) sx,
                 (byte) sy,
@@ -14,10 +14,11 @@ public class Graphics {
                 (byte) ey,
                 (byte) r, (byte) g, (byte) b
         };
+        req.addByteArrayToRequest(arr);
     }
 
-    public byte[] fillEllipse(int x, int y, int width, int height, int r, int g, int b) {
-        return new byte[]{
+    public void fillEllipse(RequestGenerator req, int x, int y, int width, int height, int r, int g, int b) {
+       byte[] arr = {
                 (byte) 17,
                 (byte) x,
                 (byte) y,
@@ -25,10 +26,11 @@ public class Graphics {
                 (byte) height,
                 (byte) r, (byte) g, (byte) b
         };
+       req.addByteArrayToRequest(arr);
     }
 
-    public byte[] fillRect(int x, int y, int width, int height, int r, int g, int b) {
-        return new byte[]{
+    public void fillRect(RequestGenerator req, int x, int y, int width, int height, int r, int g, int b) {
+        byte [] arr = {
                 (byte) 18,
                 (byte) x,
                 (byte) y,
@@ -36,11 +38,12 @@ public class Graphics {
                 (byte) height,
                 (byte) r, (byte) g, (byte) b
         };
+        req.addByteArrayToRequest(arr);
     }
 
-    public byte[] drawQuadratic(int sx, int sy, int cx, int cy, int ex, int ey, int r, int g, int b) {
-        return new byte[]{
-                (byte) 20,
+    public void drawQuadratic(RequestGenerator req, int sx, int sy, int cx, int cy, int ex, int ey, int r, int g, int b) {
+        byte [] arr = {
+                (byte) 18,
                 (byte) sx,
                 (byte) sy,
                 (byte) cx,
@@ -49,9 +52,10 @@ public class Graphics {
                 (byte) ey,
                 (byte) r, (byte) g, (byte) b
         };
+        req.addByteArrayToRequest(arr);
     }
 
-    public byte[] drawPolygon(int[] xs, int[] ys, int r, int g, int b) {
+    public void drawPolygon(RequestGenerator req, int[] xs, int[] ys, int r, int g, int b) {
         byte[] array = new byte[2 * xs.length + 5];
         array[0] = (byte) 23;
         array[1] = (byte) xs.length;
@@ -63,6 +67,6 @@ public class Graphics {
         array[array.length - 2] = (byte) g;
         array[array.length - 1] = (byte) b;
 
-        return array;
+       req.addByteArrayToRequest(array);
     }
 }
