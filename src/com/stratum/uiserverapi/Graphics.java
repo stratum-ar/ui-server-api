@@ -1,5 +1,8 @@
 package com.stratum.uiserverapi;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 public class Graphics {
 
     public Graphics() {
@@ -18,7 +21,7 @@ public class Graphics {
     }
 
     public void fillEllipse(RequestGenerator req, int x, int y, int width, int height, int r, int g, int b) {
-       byte[] arr = {
+        byte[] arr = {
                 (byte) 17,
                 (byte) x,
                 (byte) y,
@@ -26,11 +29,11 @@ public class Graphics {
                 (byte) height,
                 (byte) r, (byte) g, (byte) b
         };
-       req.addByteArrayToRequest(arr);
+        req.addByteArrayToRequest(arr);
     }
 
     public void fillRect(RequestGenerator req, int x, int y, int width, int height, int r, int g, int b) {
-        byte [] arr = {
+        byte[] arr = {
                 (byte) 18,
                 (byte) x,
                 (byte) y,
@@ -42,7 +45,7 @@ public class Graphics {
     }
 
     public void drawQuadratic(RequestGenerator req, int sx, int sy, int cx, int cy, int ex, int ey, int r, int g, int b) {
-        byte [] arr = {
+        byte[] arr = {
                 (byte) 18,
                 (byte) sx,
                 (byte) sy,
@@ -67,6 +70,44 @@ public class Graphics {
         array[array.length - 2] = (byte) g;
         array[array.length - 1] = (byte) b;
 
-       req.addByteArrayToRequest(array);
+        req.addByteArrayToRequest(array);
+    }
+
+    public void drawText(RequestGenerator req, int x, int y, String text, int r, int g, int b) {
+        byte[] arr1 = {
+                (byte) 30,
+                (byte) x,
+                (byte) y,
+                (byte) text.length()
+        };
+        byte[] arr2 = {
+                (byte) r,
+                (byte) g,
+                (byte) b
+        };
+        byte[] array = concatenateTwoArrays(
+                concatenateTwoArrays(
+                        arr1, text.getBytes(StandardCharsets.UTF_8)),
+                arr2);
+        req.addByteArrayToRequest(array);
+    }
+
+    public void drawIcon(RequestGenerator req, int x, int y, int iconNo, int r, int g, int b) {
+        byte[] arr = {
+                (byte) 22,
+                (byte) x,
+                (byte) y,
+                (byte) iconNo,
+                (byte) r, (byte) g, (byte) b
+        };
+        req.addByteArrayToRequest(arr);
+    }
+
+    public byte[] concatenateTwoArrays(byte[] array1, byte[] array2) {
+        byte[] result = Arrays.copyOf(array1, array1.length + array2.length);
+        System.arraycopy(array2, 0, result, array1.length, array2.length);
+        array2 = Arrays.copyOf(result, result.length);
+
+        return array2;
     }
 }
